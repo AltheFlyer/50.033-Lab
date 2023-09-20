@@ -47,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
             faceRightState = false;
             marioSprite.flipX = true;
         }
-        if (Input.GetKeyDown("d") && faceRightState)
+
+        if (Input.GetKeyDown("d") && !faceRightState)
         {
             faceRightState = true;
             marioSprite.flipX = false;
@@ -87,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Collided with goomba!");
             Time.timeScale = 0.0f;
 
             // Show game over screen;
@@ -100,7 +100,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void RestartButtonCallback(int input)
     {
-        Debug.Log("Restart!");
         ResetGame();
         Time.timeScale = 1.0f;
     }
