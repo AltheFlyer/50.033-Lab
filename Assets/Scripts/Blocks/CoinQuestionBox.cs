@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinQuestionBox : MonoBehaviour
@@ -15,10 +13,8 @@ public class CoinQuestionBox : MonoBehaviour
     // State variables
     public BlockState blockState = BlockState.blinking;
 
-    [NonSerialized]
     public Transform blockChild;
 
-    [NonSerialized]
     public Transform coinChild;
 
     private Animator animator;
@@ -32,6 +28,8 @@ public class CoinQuestionBox : MonoBehaviour
         {
             throw new Exception("Coin Question Block does not contain an animator!");
         }
+
+        SetState(BlockState.blinking);
     }
 
     // Update is called once per frame
@@ -44,6 +42,12 @@ public class CoinQuestionBox : MonoBehaviour
     private bool containsCoin()
     {
         return blockState == BlockState.blinking;
+    }
+
+    public void SetState(BlockState state)
+    {
+        blockState = state;
+        animator.Play(state.ToString());
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -60,13 +64,7 @@ public class CoinQuestionBox : MonoBehaviour
         if (transform.position.y - other.y > 0.25f)
         {
             blockState = BlockState.bouncing;
+            animator.SetTrigger("hitTrigger");
         }
-    }
-
-    // Sets block state to disabled form.
-    // Shoudl be invoked by an Animation Event.
-    void DisableSelf()
-    {
-        blockState = BlockState.disabled;
     }
 }

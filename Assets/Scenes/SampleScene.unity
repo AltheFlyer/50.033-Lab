@@ -1039,6 +1039,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1128180641}
     m_Modifications:
+    - target: {fileID: 1974327489988276400, guid: 7b64a7e1ed1d9b54eb29960a8c108ba3, type: 3}
+      propertyPath: containsCoin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2478922897041822078, guid: 7b64a7e1ed1d9b54eb29960a8c108ba3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14
@@ -1483,7 +1487,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -2804,6 +2808,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1128180641}
     m_Modifications:
+    - target: {fileID: 1974327489988276400, guid: 7b64a7e1ed1d9b54eb29960a8c108ba3, type: 3}
+      propertyPath: containsCoin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2478922897041822078, guid: 7b64a7e1ed1d9b54eb29960a8c108ba3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -2863,11 +2871,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4215512380443952505, guid: 123165f1aa71f0641b50bb756094599a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4215512380443952505, guid: 123165f1aa71f0641b50bb756094599a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4215512380443952505, guid: 123165f1aa71f0641b50bb756094599a, type: 3}
       propertyPath: m_LocalPosition.z
