@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     private int score = 0;
 
+
+    public AudioSource playerDeathAudio;
+
     void Start()
     {
         gameStart.Invoke();
@@ -50,5 +53,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0.0f;
         gameOver.Invoke();
+    }
+
+    public void PlayDie()
+    {
+        playerDeathAudio.PlayOneShot(playerDeathAudio.clip);
     }
 }

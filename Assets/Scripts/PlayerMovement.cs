@@ -27,9 +27,6 @@ public class PlayerMovement : MonoBehaviour
     // for audio
     public AudioSource marioAudio;
 
-
-    public AudioClip marioDeath;
-
     // state
     [System.NonSerialized]
     public bool alive = true;
@@ -162,7 +159,6 @@ public class PlayerMovement : MonoBehaviour
         {
             // play death animation
             marioAnimator.Play("mario-die");
-            marioAudio.PlayOneShot(marioDeath);
             alive = false;
         }
     }
@@ -199,5 +195,10 @@ public class PlayerMovement : MonoBehaviour
     void PromptGameOver()
     {
         GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().GameOver();
+    }
+
+    void PromptInitialDie()
+    {
+        GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().PlayDie();
     }
 }
