@@ -53,6 +53,24 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""click"",
+                    ""type"": ""Button"",
+                    ""id"": ""32d02326-4d04-4e49-984d-51f2f054c88a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""point"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6829295-a15b-428a-8fcf-c857b11b1688"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -95,7 +113,7 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""MarioActions"",
                     ""action"": ""jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -106,8 +124,52 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": ""Hold(duration=0.3)"",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""MarioActions"",
                     ""action"": ""jumphold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""bfa1002a-a790-430a-b515-f17e0ed684ae"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""point"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a78be693-acd0-4a87-aec1-63135d55bd85"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MarioActions"",
+                    ""action"": ""point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""6ae7d554-b0fc-46b3-8f19-1b190eb8a753"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MarioActions"",
+                    ""action"": ""point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56e1deb8-d19f-492a-abfb-2063e23ac77a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MarioActions"",
+                    ""action"": ""click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -116,11 +178,16 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Keyboard"",
-            ""bindingGroup"": ""Keyboard"",
+            ""name"": ""MarioActions"",
+            ""bindingGroup"": ""MarioActions"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -133,6 +200,8 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
         m_gameplay_move = m_gameplay.FindAction("move", throwIfNotFound: true);
         m_gameplay_jump = m_gameplay.FindAction("jump", throwIfNotFound: true);
         m_gameplay_jumphold = m_gameplay.FindAction("jumphold", throwIfNotFound: true);
+        m_gameplay_click = m_gameplay.FindAction("click", throwIfNotFound: true);
+        m_gameplay_point = m_gameplay.FindAction("point", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -197,6 +266,8 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_gameplay_move;
     private readonly InputAction m_gameplay_jump;
     private readonly InputAction m_gameplay_jumphold;
+    private readonly InputAction m_gameplay_click;
+    private readonly InputAction m_gameplay_point;
     public struct GameplayActions
     {
         private @MarioActions m_Wrapper;
@@ -204,6 +275,8 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
         public InputAction @move => m_Wrapper.m_gameplay_move;
         public InputAction @jump => m_Wrapper.m_gameplay_jump;
         public InputAction @jumphold => m_Wrapper.m_gameplay_jumphold;
+        public InputAction @click => m_Wrapper.m_gameplay_click;
+        public InputAction @point => m_Wrapper.m_gameplay_point;
         public InputActionMap Get() { return m_Wrapper.m_gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -222,6 +295,12 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
             @jumphold.started += instance.OnJumphold;
             @jumphold.performed += instance.OnJumphold;
             @jumphold.canceled += instance.OnJumphold;
+            @click.started += instance.OnClick;
+            @click.performed += instance.OnClick;
+            @click.canceled += instance.OnClick;
+            @point.started += instance.OnPoint;
+            @point.performed += instance.OnPoint;
+            @point.canceled += instance.OnPoint;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -235,6 +314,12 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
             @jumphold.started -= instance.OnJumphold;
             @jumphold.performed -= instance.OnJumphold;
             @jumphold.canceled -= instance.OnJumphold;
+            @click.started -= instance.OnClick;
+            @click.performed -= instance.OnClick;
+            @click.canceled -= instance.OnClick;
+            @point.started -= instance.OnPoint;
+            @point.performed -= instance.OnPoint;
+            @point.canceled -= instance.OnPoint;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -252,13 +337,13 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @gameplay => new GameplayActions(this);
-    private int m_KeyboardSchemeIndex = -1;
-    public InputControlScheme KeyboardScheme
+    private int m_MarioActionsSchemeIndex = -1;
+    public InputControlScheme MarioActionsScheme
     {
         get
         {
-            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
-            return asset.controlSchemes[m_KeyboardSchemeIndex];
+            if (m_MarioActionsSchemeIndex == -1) m_MarioActionsSchemeIndex = asset.FindControlSchemeIndex("MarioActions");
+            return asset.controlSchemes[m_MarioActionsSchemeIndex];
         }
     }
     public interface IGameplayActions
@@ -266,5 +351,7 @@ public partial class @MarioActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnJumphold(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
     }
 }

@@ -7,11 +7,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class JumpOverGoomba : MonoBehaviour
 {
     public Transform enemyLocation;
-    public TextMeshProUGUI scoreText;
     private bool onGroundState;
-
-    [System.NonSerialized]
-    public int score = 0;
 
     private bool countScoreState = false;
     public Vector3 boxSize;
@@ -19,10 +15,12 @@ public class JumpOverGoomba : MonoBehaviour
     public LayerMask layerMask;
 
     // Start is called before the first frame update
+    GameManager gameManager;
     void Start()
     {
-
+        gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -45,8 +43,7 @@ public class JumpOverGoomba : MonoBehaviour
             if (Mathf.Abs(transform.position.x - enemyLocation.position.x) < 0.5f)
             {
                 countScoreState = false;
-                ++score;
-                scoreText.text = "Score: " + score.ToString();
+                gameManager.IncreaseScore(1);
             }
         }
     }

@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 5815895285410583968}
   - component: {fileID: 8836212580749441437}
   - component: {fileID: 4948698280522125999}
+  - component: {fileID: 1888172630161419705}
   m_Layer: 6
   m_Name: Coin Question Box
   m_TagString: Obstacles
@@ -285,6 +286,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockState: 0
+  blockChild: {fileID: 0}
+  coinChild: {fileID: 0}
 --- !u!114 &8836212580749441437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,3 +398,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1888172630161419705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5166497394971130601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c7ba59b6e3b184a8db01fc3dfcde7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameter: 1
+  useInt:
+    m_PersistentCalls:
+      m_Calls: []
