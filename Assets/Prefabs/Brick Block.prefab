@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5775757952756092358}
   - component: {fileID: 7069656126235859660}
   - component: {fileID: 7137662798534510890}
+  - component: {fileID: 5897567013633151541}
   m_Layer: 6
   m_Name: Brick Block
   m_TagString: Obstacles
@@ -142,7 +143,7 @@ AudioSource:
   m_GameObject: {fileID: 7788707638238427262}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6738619898282134878, guid: 54570c25a48c8564faed71b320b5db61, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -229,6 +230,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5897567013633151541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7788707638238427262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c7ba59b6e3b184a8db01fc3dfcde7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameter: 1
+  useInt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8652219818365667040
 GameObject:
   m_ObjectHideFlags: 0
