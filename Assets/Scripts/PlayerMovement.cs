@@ -127,6 +127,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Bounce()
+    {
+        marioBody.AddForce(Vector2.up * upSpeed, ForceMode2D.Impulse);
+        onGroundState = false;
+        jumpedState = true;
+        // update animator state
+        marioAnimator.SetBool("onGround", onGroundState);
+    }
+
 
     public void JumpHold()
     {
@@ -152,15 +161,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    public void Die()
     {
-        if (other.gameObject.CompareTag("Enemy") && alive)
-        {
-            // play death animation
-            marioAnimator.Play("mario-die");
-            alive = false;
-        }
+        marioAnimator.Play("mario-die");
+        alive = false;
     }
 
     public void GameRestart()

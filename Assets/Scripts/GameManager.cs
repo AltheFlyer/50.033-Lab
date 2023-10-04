@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
@@ -13,13 +15,27 @@ public class GameManager : MonoBehaviour
 
     private int score = 0;
 
+    public int scoreBonus = 0;
 
     public AudioSource playerDeathAudio;
+
+    private IEnumerator scoreBonusReset;
+
+
+    public AudioMixer mixer;
+    public AudioMixerSnapshot lowBonusSnapshot;
+    public AudioMixerSnapshot highBonusSnapshot;
+
+    private AudioMixerSnapshot[] snapshots;
 
     void Start()
     {
         gameStart.Invoke();
         Time.timeScale = 1.0f;
+
+        snapshots = new AudioMixerSnapshot[]{
+            lowBonusSnapshot, highBonusSnapshot
+        };
     }
 
     // Update is called once per frame
@@ -41,6 +57,17 @@ public class GameManager : MonoBehaviour
     {
         score += increment;
         SetScore(score);
+
+        ++scoreBonus;
+        // Janky way to reset the score timer
+        if (scoreBonusReset != null)
+        {
+            StopCoroutine(scoreBonusReset);
+        }
+        scoreBonusReset = DelayedResetScoreBonus();
+        StartCoroutine(scoreBonusReset);
+
+        mixer.TransitionToSnapshots(snapshots, genSnapshotWeights(), 0.0f);
     }
 
     public void SetScore(int score)
@@ -58,5 +85,30 @@ public class GameManager : MonoBehaviour
     public void PlayDie()
     {
         playerDeathAudio.PlayOneShot(playerDeathAudio.clip);
+    }
+
+    IEnumerator DelayedResetScoreBonus()
+    {
+        yield return new WaitForSeconds(3.0f);
+        ResetScoreBonus();
+    }
+
+    void ResetScoreBonus()
+    {
+        // Debug.Log("Score bonus resetting!");
+        scoreBonus = 0;
+        mixer.TransitionToSnapshots(snapshots, genSnapshotWeights(), 0.0f);
+    }
+
+    float[] genSnapshotWeights()
+    {
+        float highWeight = Math.Max(0.0f, Math.Min(7.0f, scoreBonus - 1) / 7.0f);
+        float lowWeight = 1.0f - highWeight;
+
+        // Debug.Log(lowWeight + " " + highWeight);
+
+        return new float[]{
+            lowWeight, highWeight
+        };
     }
 }

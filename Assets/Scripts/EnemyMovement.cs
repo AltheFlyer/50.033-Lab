@@ -18,6 +18,10 @@ public class EnemyMovement : MonoBehaviour
 
     public Vector3 startPosition;
 
+    private bool isAlive;
+
+    public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +29,7 @@ public class EnemyMovement : MonoBehaviour
         enemyBody = GetComponent<Rigidbody2D>();
         originalX = transform.position.x;
         ComputeVelocity();
+        isAlive = true;
     }
 
     void ComputeVelocity()
@@ -40,6 +45,11 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive)
+        {
+            return;
+        }
+
         if (Mathf.Abs(enemyBody.position.x - originalX) < maxOffset)
         {
             Movegoomba();
@@ -52,16 +62,55 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-    }
-
-
+    // (Used by EnemyManager)
     public void GameRestart()
     {
         transform.localPosition = startPosition;
         originalX = transform.position.x;
         moveRight = -1;
         ComputeVelocity();
+        isAlive = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+        animator.SetTrigger("respawnTrigger");
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!isAlive)
+        {
+            return;
+        }
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerMovement player = other.GetComponent<PlayerMovement>();
+            if (!player)
+            {
+                return;
+            }
+            if (!player.alive)
+            {
+                return;
+            }
+
+            if (other.attachedRigidbody.velocity.y < 0 && other.transform.position.y - transform.position.y > 0.4f)
+            {
+                animator.SetTrigger("deathTrigger");
+                player.Bounce();
+                isAlive = false;
+                GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>().IncreaseScore(1);
+            }
+            else
+            {
+                player.Die();
+            }
+        }
+    }
+
+    void Despawn()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
     }
 }

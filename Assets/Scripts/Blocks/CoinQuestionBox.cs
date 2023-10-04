@@ -61,7 +61,7 @@ public class CoinQuestionBox : MonoBehaviour
         // where the thing that hit the block (mario) is
         Vector3 other = col.collider.transform.position;
 
-        if (transform.position.y - other.y > 0.25f)
+        if (transform.position.y - other.y > 0.25f && col.rigidbody.velocity.y >= 0)
         {
             blockState = BlockState.bouncing;
             animator.SetTrigger("hitTrigger");
